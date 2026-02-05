@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard {{ sg.titel }}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_dash.css') }}">
+</head>
+<body>
+<div class="header">Dashboard {{ sg.titel }}</div>
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        <div class="flash-container">
+            {% for category, message in messages %}
+                <div style="position: absolute; top: 65px; left: 50%; transform: translateX(-50%); text-align: center; padding: 5px; border-radius: 4px; width: 90%; max-width: 400px; "
+                     class="flash-message flash-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endwith %}
+
+<div class="stats-grid">
+
+    <div class="card box-design">
+        {% if tage_vergangen < 0 %}
+            <div class="card-label">Tage bis Beginn</div>
+            <div class="card-value">{{ tage_vergangen * -1 }}</div>
+        {% else %}
+            <div class="card-label">Tage vergangen</div>
+            <div class="card-value">{{ tage_vergangen }}</div>
+        {% endif %}
+
+        <div class="card-sub">Ziel: {{ tage_ziel }}</div>
+        <div class="progress-bar">
+            <div class="progress-fill"
+                 style="width: {{ zeitbalken_fortschritt }}%; background-color: {{ zeitbalken_farbe }};"></div>
+        </div>
+    </div>
+
+    <div class="card box-design">
+        <div class="card-label">Module</div>
+        <div class="card-value">{{ module_abgeschlossen }}</div>
+        <div class="card-sub">abgeschlossen</div>
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: {{ module_fortschritt }}%; background-color: #aaddaa;"></div>
+        </div>
+    </div>
+
+    <div class="card box-design">
+        <div class="card-label">ECTS</div>
+        <div class="card-value">{{ erreichte_credits }}</div>
+        <div class="card-sub">erlangt</div>
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: {{ credit_fortschritt }}%;; background-color: #aaddaa;"></div>
+        </div>
+    </div>
+
+    <div class="card box-design">
+        <div class="card-label">Notenschnitt</div>
+        <div class="card-value">{{ notenschnitt_aktuell }}</div>
+        <div class="card-sub">Ziel: {{ notenschnitt_ziel }}</div>
+        <div class="progress-bar">
+            <div class="progress-fill" style="width: 100%; background-color: {{ notenbalken_farbe }};"></div>
+        </div>
+    </div>
+</div>
+
+<div class="table-card box-design">
+    <table>
+        <thead>
+        <tr>
+            <th style="width: 10%;">Semester</th>
+            <th style="width: 60%;">Modul</th>
+            <th style="width: 20%;">Prüfungsform</th>
+            <th style="width: 10%; text-align: left;">Note</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for sem in sg.semester %}
+            {% for mod in sem.module %}
+                <tr>
+                    <td style="text-align: center;">{{ sem.nummer }}</td>
+                    <td>{{ mod.titel }}</td>
+                    <td style="font-size: 0.9em; color: #666;">{{ mod.pruefungsleistung.pruefungsart }}</td>
+                    <td style="text-align: left;">
+                        {% if mod.pruefungsleistung.note != None %}
+                            <span class="grade-badge">{{ "%.1f"|format(mod.pruefungsleistung.note)|replace('.', ',') }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="center">
+    <a href="{{ url_for('bearbeiten') }}" class="btn">bearbeiten</a>
+</div>
+    <script>
+        setTimeout(function() {
+            document.querySelector('.flash-container').style.display = 'none';
+        }, 5000);
+    </script>
+
+</body>
+</html>

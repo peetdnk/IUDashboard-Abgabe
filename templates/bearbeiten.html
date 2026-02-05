@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard {{ sg.titel }} - Bearbeitung</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style_edit.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <form method="POST">
+        <h2>Studiengang bearbeiten</h2>
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-container">
+                    {% for category, message in messages %}
+                        <div class="flash-message flash-{{ category }}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        <div class="section">
+            <div class="form-group">
+                <label for="studien_titel">Name des Studiengangs</label>
+                <input type="text" name="studien_titel" id="studien_titel" class="w-full" value="{{ sg.titel }}">
+            </div>
+            <div class="form-grid" style="margin-top: 20px;">
+                <div class="form-group">
+                    <label for="start_datum">Studienbeginn</label>
+                    <input type="date" name="start_datum" id="start_datum"
+                           value="{{ sg.start_datum.strftime('%Y-%m-%d') }}">
+                </div>
+                <div class="form-group">
+                    <label for="ziel_tage">Zeitziel (<=12 = Jahre, >12 = Tage)</label>
+                    <input type="number" name="ziel_tage" id="ziel_tage" min="1" max="9999" value="{{ ziel_tage }}">
+                </div>
+                <div class="form-group">
+                    <label for="ziel_note">Wunschnote (Schnitt)</label>
+                    <input type="text" name="ziel_note" min="1.0" max="6.0" step="0.1" id="ziel_note" value="{{ ziel_note }}">
+                </div>
+            </div>
+        </div>
+
+        <h3>Module & Leistungen</h3>
+        <div class="section">
+            <table id="module-table">
+                <thead>
+                <tr>
+                    <th style="width: 7%;">Sem.</th>
+                    <th style="width: 53%;">Modultitel</th>
+                    <th style="width: 20%;">Prüfung</th>
+                    <th style="width: 7%;">ECTS</th>
+                    <th style="width: 8%;">Note</th>
+                    <th style="width: 5%;"></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for sem in sg.semester %}
+                    {% for mod in sem.module %}
+                        <tr>
+                            <td><input type="number" name="mod_semester" class="w-full"  min="1" max="99" oninput="if(this.value.length > 2) this.value = this.value.slice(0, 2);" value="{{ sem.nummer }}"></td>
+                            <td><input type="text" name="mod_titel" class="w-full" value="{{ mod.titel }}"></td>
+                            <td><input type="text" name="mod_pruefung" class="w-full"
+                                       value="{{ mod.pruefungsleistung.pruefungsart }}">
+                            </td>
+                            <td><input type="number" name="mod_credits" class="w-full" min="1" max="10" value="{{ mod.credits }}"></td>
+                            <td><input type="number" name="mod_note" class="w-full" min="1.0" max="6.0" step="0.1" value="{% if mod.pruefungsleistung.note != None %}{{ mod.pruefungsleistung.note }}{% endif %}">
+                            </td>
+                            <td style="text-align: center;">
+                                <button type="button" class="btn-danger-sm"
+                                        onclick="this.parentElement.parentElement.remove()">✕
+                                </button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <button type="button" class="btn btn-outline" style="margin-top: 15px;" onclick="neuesModul()">
+                + Neues Modul hinzufügen
+            </button>
+        </div>
+
+        <div class="footer-actions">
+            <div>
+                <button type="submit" class="btn btn-success">Änderungen speichern</button>
+                <a href="{{ url_for('dashboard') }}" class="btn btn-outline" style="margin-left: 10px;">Abbrechen</a>
+            </div>
+            <a href="{{ url_for('logout') }}" class="btn btn-outline" style="color: var(--danger); font-size: 0.9rem;">Abmelden</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    function neuesModul() {
+        const table = document.getElementById('module-table').getElementsByTagName('tbody')[0];
+        const row = table.insertRow();
+        row.innerHTML = `
+        <td><input type="number" name="mod_semester" min="1" max="99" oninput="if(this.value.length > 2) this.value = this.value.slice(0, 2);" class="w-full" placeholder="1"></td>
+        <td><input type="text" name="mod_titel" class="w-full" placeholder="Name des Moduls"></td>
+        <td><input type="text" name="mod_pruefung" class="w-full" placeholder="z.B. Klausur"></td>
+        <td><input type="number" name="mod_credits" min="1" max="10" class="w-full" value="5"></td>
+        <td><input type="number" name="mod_note" min="1.0" max="6.0" step="0.1"  class="w-full"></td>
+        <td style="text-align: center;">
+            <button type="button" class="btn-danger-sm" onclick="this.parentElement.parentElement.remove()">✕</button>
+        </td>
+    `;
+    }
+</script>
+<script>
+    setTimeout(function() {
+        document.querySelector('.flash-container').style.display = 'none';
+    }, 5000);
+</script>
+</body>
+</html>
