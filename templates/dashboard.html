@@ -57,9 +57,9 @@
     </div>
 
     <div class="card box-design">
-        <div class="card-label">Notenschnitt</div>
-        <div class="card-value">{{ notenschnitt_aktuell }}</div>
-        <div class="card-sub">Ziel: {{ notenschnitt_ziel }}</div>
+        <div class="card-label">Notendurchschnitt</div>
+        <div class="card-value">{{ notendurchschnitt_aktuell }}</div>
+        <div class="card-sub">Ziel: {{ notendurchschnitt_ziel }}</div>
         <div class="progress-bar">
             <div class="progress-fill" style="width: 100%; background-color: {{ notenbalken_farbe }};"></div>
         </div>
@@ -86,6 +86,9 @@
                     <td style="text-align: left;">
                         {% if mod.pruefungsleistung.note != None %}
                             <span class="grade-badge">{{ "%.1f"|format(mod.pruefungsleistung.note)|replace('.', ',') }}</span>
+                        {% endif %}
+                        {% if mod.pruefungsleistung.modul_anerkannt %}
+                            <span class="grade-badge">anerk.</span>
                         {% endif %}
                     </td>
                 </tr>
