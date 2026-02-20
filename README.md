@@ -10,7 +10,7 @@ Der restliche Teil der Anleitung setzt eine funktionierende Python3 Installation
 # Installation über Terminal mit GIT
 1. Terminal bzw. Eingabeaufforderung öffnen und zu einem geeignetem Pfad wechseln. Anschließend folgende Befehle ausführen:
 ```
-clone https://github.com/peetdnk/IUDashboard.git
+clone https://github.com/peetdnk/IUDashboard-Abgabe.git
 cd IUDashboard
 pip install -r requirements.txt
 python3 .\app.py
