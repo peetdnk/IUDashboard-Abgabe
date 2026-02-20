@@ -11,9 +11,9 @@ Der restliche Teil der Anleitung setzt eine funktionierende Python3 Installation
 1. Terminal bzw. Eingabeaufforderung öffnen und zu einem geeignetem Pfad wechseln. Anschließend folgende Befehle ausführen:
 ```
 clone https://github.com/peetdnk/IUDashboard-Abgabe.git
-cd IUDashboard
+cd IUDashboard-Abgabe
 pip install -r requirements.txt
-python3 .\app.py
+python .\app.py
 ```
 3. Browser öffnen und http://127.0.0.1 in die Adressleiste eingeben. Das Dashboard sollte nun sichtbar sein.
 
@@ -25,6 +25,6 @@ python3 .\app.py
 4. Folgende Befehle ausführen:
 ```
 pip install -r requirements.txt
-python3 .\app.py
+python .\app.py
 ```
 6. Browser öffnen und http://127.0.0.1 in die Adressleiste eingeben. Das Dashboard sollte nun sichtbar sein.
