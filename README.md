@@ -1,6 +1,6 @@
 Das Programm ist darauf ausgelegt einen Studiengang über eine CSV-Datei auszulesen. Für den Studiengang B.Sc. Cybersecurity ist exemplarisch eine CSV-Datei beigefügt. Es besteht aber auch die
 Möglichkeit einen leeren Studiengang zu erstellen, indem man auf die Bereitstellung der CSV-Datei verzichtet. Um einen eigenen Studiengang einzulesen, kann eine CSV-Datei mit folgenden Spaltenüberschriften 
-anhand eines Studienablaufplans nach folgendem Beispiel erstellt werden:
+anhand eines Studienablaufplans nach diesem Beispiel erstellt werden:
 ```
 Semester,Modul,ECTS,Pruefungsleistung
 2,Projekt: Objektorientierte und funktionale Programmierung mit Python,5,Portfolio
