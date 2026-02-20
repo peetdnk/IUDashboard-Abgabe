@@ -27,4 +27,4 @@ class StudiengangCSVData(StudiengangRepository):
 
     def speichern(self, studiengang):
         """ Speichern in CSV-Datei. Nicht erlaubt. """
-        pass
+        return NotImplemented
