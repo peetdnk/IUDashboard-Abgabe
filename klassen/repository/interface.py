@@ -4,7 +4,7 @@ from klassen.domain.studiengang import Studiengang
 
 
 class StudiengangRepository(ABC):
-    """ Interface zum Speicher und Laden von Daten"""
+    """ Interface zum Speichern und Laden von Daten"""
     @abstractmethod
     def speichern(self, studiengang: Studiengang) -> None:
         pass

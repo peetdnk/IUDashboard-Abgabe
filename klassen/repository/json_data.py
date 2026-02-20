@@ -21,6 +21,7 @@ class StudiengangJSONData(StudiengangRepository):
         """ Speichert den serialisierten Studiengang in eine Datei """
         data = converter.serialisieren(studiengang)
         with open(json_file, 'w', encoding='utf-8') as f:
+            # hier passiert das eigentliche serialisieren von Dictionary zu JSON, durch die Methode dump.
             json.dump(data, f, indent=4, ensure_ascii=False)
             logging.info("Studiengang in JSON-Datei gespeichert.")
 
@@ -29,8 +30,10 @@ class StudiengangJSONData(StudiengangRepository):
         # Prüfen ob JSON-Datei existiert, wenn nicht abbrechen und None zurückgeben
         if not os.path.exists(json_file):
             return None
-        # JSON-Datei laden und inhalt in daten speichern
+        # JSON-Datei laden und inhalt in daten als Dictionary speichern
         with open(json_file, 'r', encoding='utf-8') as f:
+            # load übernimmt das eigentliche deserialiseren von JSON zu einem Dictionary
             daten = json.load(f)
+        # Dictionary an den Konverter geben
         return converter.deserialisieren(daten)
 

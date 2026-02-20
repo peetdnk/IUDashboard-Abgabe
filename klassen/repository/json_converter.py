@@ -10,11 +10,13 @@ from klassen.domain.ziel_zeit import ZeitZiel
 
 
 class StudiengangJSONConverter:
+    """ Deserialisiert geladene JSON Daten oder Serialisiert ein Studiengang Objekt zu JSON"""
     @staticmethod
     def deserialisieren(daten):
+        """ Deserialisiert ein Studiengang Objekt aus JSON"""
         # Semester Liste erstellen
         semester_liste = []
-        # Durch Semester-Liste aus JSON Daten iterieren
+        # Durch Semester-Liste aus dem Dictionary der JSON Daten iterieren
         for sem_data in daten['semester']:
             # Modul-Liste erstellen
             modul_liste = []
@@ -49,7 +51,8 @@ class StudiengangJSONConverter:
 
     @staticmethod
     def serialisieren(studiengang: Studiengang):
-        # JSON-String vorbereiten
+        """ Seriialisiert ein Studiengang Objekt zu JSON """
+        # JSON-String in einem Dictionary vorbereiten
         data = {
             "titel": studiengang.titel,
             "start_datum": studiengang.start_datum.isoformat(),
@@ -59,7 +62,7 @@ class StudiengangJSONConverter:
             },
             "semester": []
         }
-        # Modul- und Semesterdaten in den JSON-String schreiben
+        # Modul- und Semesterdaten in das Dictionary schreiben
         for semester in studiengang.semester:
             semester_data = {"nummer": semester.nummer, "module": []}
             for modul in semester.module:
@@ -72,5 +75,5 @@ class StudiengangJSONConverter:
                 }
                 semester_data["module"].append(modul_data)
             data["semester"].append(semester_data)
-        # JSON-String in Datei schreiben
+        # Dicionary zurück geben zum Speichern
         return data

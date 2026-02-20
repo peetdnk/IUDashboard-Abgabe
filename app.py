@@ -65,4 +65,4 @@ def bearbeiten():
 
 # Auf allen verfügbaren Netzwerk-Schnittstellen auf Port 80 lauschen
 if __name__ == '__main__':
-    dashboard_app.run(host="0.0.0.0", port=80)
+    dashboard_app.run(host="0.0.0.0", port=5000)
