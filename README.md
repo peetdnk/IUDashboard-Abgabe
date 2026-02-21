@@ -15,7 +15,7 @@ cd IUDashboard-Abgabe
 pip install -r requirements.txt
 python .\app.py
 ```
-3. Browser öffnen und http://127.0.0.1 in die Adressleiste eingeben. Das Dashboard sollte nun sichtbar sein.
+3. Browser öffnen und http://127.0.0.1:5000 in die Adressleiste eingeben. Das Dashboard sollte nun sichtbar sein.
 
    
 # Installation nach Download des archivierten Projektes
@@ -27,4 +27,4 @@ python .\app.py
 pip install -r requirements.txt
 python .\app.py
 ```
-6. Browser öffnen und http://127.0.0.1 in die Adressleiste eingeben. Das Dashboard sollte nun sichtbar sein.
+6. Browser öffnen und http://127.0.0.1:5000 in die Adressleiste eingeben. Das Dashboard sollte nun sichtbar sein.
