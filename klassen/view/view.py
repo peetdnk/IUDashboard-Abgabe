@@ -8,8 +8,9 @@ class StudiengangAnsicht:
     @staticmethod
     def dashboard(manager, service):
         """ Gibt die Dashboard-Seite aus """
+        # Studiengang laden
         studiengang = manager.studiengang_laden()
-
+        # Werte zu Variablen zuordnen die in dem HTML Template genutzt werden
         return render_template(
             'dashboard.html',
             sg=manager.studiengang_laden(),
@@ -46,6 +47,7 @@ class StudiengangAnsicht:
     @staticmethod
     def logout(session):
         """ Logout """
+        # Session Cookie löschen und weiterleiten an Dashboard
         session.pop('logged_in', None)
         logging.info("Benutzer erfolgreich ausgeloggt.")
         return redirect(url_for('dashboard'))
@@ -53,6 +55,7 @@ class StudiengangAnsicht:
     @staticmethod
     def bearbeiten(session, request, handler, manager):
         """ Dashboard-Daten bearbeiten """
+        # wenn kein Session-Cookie vorhanden ist, weiterleitung an Login Seite
         if not session.get('logged_in'):
             return redirect(url_for('login'))
         # Studiengang laden
@@ -61,14 +64,15 @@ class StudiengangAnsicht:
             # Nach drücken auf Speichern wird versucht den Studiengang aus den Formulardaten zu aktualisieren.
             # Tritt kein Fehler auf wird eine positive Meldung gespeichert und auf der Hauptseite angezeigt.
             try:
+                # Aufruf der Methode aktualisieren_aus_formular mit Übergabe des aktuellen Studiengang-Objekts, den Daten aus dem Webformular und dem manager damit gespeichert werden kann
                 handler.aktualisieren_aus_formular(studiengang, request.form, manager)
                 flash("Änderungen erfolgreich gespeichert!", "success")
-                return redirect(url_for('dashboard'))
+                return redirect(url_for('dashboard')) # Dashboard anzeigen
             # Bei Fehler wird eine negative Meldung gespeichert und ausgegeben. Der Fehler wird in die Log-Datei geschrieben.
             except Exception as e:
                 fehlermeldung = f"Speichern fehlgeschlagen: dashboard.log überprüfen."
-                flash(fehlermeldung, 'danger')
-                logging.error({str(e)})
+                flash(fehlermeldung, 'danger') # Fehlermeldung
+                logging.error({str(e)}) # Ausgabe des Fehlers in der Log-Datei
                 # erneutes ausgeben der bearbeiten.html mit den alten Werten.
                 return render_template(
                     'bearbeiten.html',

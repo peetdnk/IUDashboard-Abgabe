@@ -10,40 +10,45 @@ from klassen.domain.ziel_zeit import ZeitZiel
 
 
 class StudiengangCSVConverter:
+    """ Erstellt einen Studiengang, liest optional eine CSV-Datei ein und """
     @staticmethod
     def deserialisieren(csv_read):
         """ Wandelt Daten aus CSV-Datei in einen Studiengang um. """
-        # Standardwerte
-        start_datum = datetime.datetime.now()
-        titel = "Neuer Studiengang"
-        logging.info("Versuche CSV-Datei einzulesen.")
-        # Prüfen ob CSV-Datei existiert, wenn ja, öffnen und einlesen
-        semester_dict = {}
-        for zeile in csv_read:
-            # Moduldaten zeilenweise einlesen und zwischenspeichern
-            sem_num = int(zeile['Semester'])
-            mod_titel = zeile['Modul']
-            mod_credits = int(zeile['ECTS'])
-            mod_pruefung_str = zeile['Pruefungsleistung']
-            # Objekte erstellen
-            pruefungsleistung = Pruefungsleistung(mod_pruefung_str)
-            modul = Modul(mod_titel, mod_credits, pruefungsleistung)
-            # Semester anlegen, wenn es nicht existiert
-            if sem_num not in semester_dict:
-                semester_dict[sem_num] = []
-            # Modul dem Semester hinzufügen
-            semester_dict[sem_num].append(modul)
-        if not semester_dict:
-            logging.info("CSV-Datei nicht vorhanden. Erstelle einen leeren Studiengang.")
-        # Wenn keine CSV-Datei existiert ist semester_dict leer, somit wird semester_list ebenfalls leer
-        semester_list = []
-        for num in sorted(semester_dict.keys()):
-            semester_list.append(Semester(num, semester_dict[num]))
+        # Standardwerte setzen, welche nicht in der CSV-Datei stehen (müssen im Webinterface angepasst werden)
+        start_datum = datetime.datetime.now() # Aktuelles Datum als Start-Datum setzen
         # Ziele auf 0 setzen
         ziele_dict = {
             "zeit": ZeitZiel(int(0)),
             "note": NotenZiel(float(0.0))
         }
+        titel = "Neuer Studiengang"
+        # Dictionary für die Semester Daten erstellen
+        semester_dict = {}
+        # Semester Liste erstellen
+        semester_list = []
+        # Wenn Daten erhalten dann Zeile für Zeile auslesen
+        if csv_read:
+            logging.info("Erstelle Studiengang aus CSV-Datei.")
+            for zeile in csv_read:
+                # Moduldaten zeilenweise einlesen und in einem Dictionary zwischenspeichern
+                sem_num = int(zeile['Semester'])
+                mod_titel = zeile['Modul']
+                mod_credits = int(zeile['ECTS'])
+                mod_pruefung_str = zeile['Pruefungsleistung']
+                # Prüfungsleistung erstellen
+                pruefungsleistung = Pruefungsleistung(mod_pruefung_str)
+                # Modul erstellen
+                modul = Modul(mod_titel, mod_credits, pruefungsleistung)
+                # Semester als Liste anlegen, wenn es nicht existiert
+                if sem_num not in semester_dict:
+                    semester_dict[sem_num] = []
+                # Modul dem Semester hinzufügen
+                semester_dict[sem_num].append(modul)
+            # Aus den eingelesenen Daten Semester Objekte erstellen und an die Semester Liste anhängen
+            for num in sorted(semester_dict.keys()):
+                semester_list.append(Semester(num, semester_dict[num]))
+        else:
+            logging.info("CSV-Datei nicht vorhanden. Erstelle einen leeren Studiengang.")
         logging.info("Neuer Studiengang erstellt.")
         # Studiengang erstellen und zurückgeben
-        return Studiengang(titel, semester_list, start_datum, ziele_dict)
+        return Studiengang(titel,start_datum, semester_list, ziele_dict)
