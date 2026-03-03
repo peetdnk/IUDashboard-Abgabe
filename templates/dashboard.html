@@ -8,6 +8,7 @@
 </head>
 <body>
 <div class="header">Dashboard {{ sg.titel }}</div>
+<!-- Container mit Flash-Nachricht -->
 {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
         <div class="flash-container">
@@ -21,8 +22,9 @@
     {% endif %}
 {% endwith %}
 
+<!-- Obere Reihe mit aktuellen Daten-->
 <div class="stats-grid">
-
+    <!-- Vergangene Tage -->
     <div class="card box-design">
         {% if tage_vergangen < 0 %}
             <div class="card-label">Tage bis Beginn</div>
@@ -31,14 +33,14 @@
             <div class="card-label">Tage vergangen</div>
             <div class="card-value">{{ tage_vergangen }}</div>
         {% endif %}
-
+        <!-- Fortschrittsbalken -->
         <div class="card-sub">Ziel: {{ tage_ziel }}</div>
         <div class="progress-bar">
             <div class="progress-fill"
                  style="width: {{ zeitbalken_fortschritt }}%; background-color: {{ zeitbalken_farbe }};"></div>
         </div>
     </div>
-
+    <!-- abgeschlossene Module -->
     <div class="card box-design">
         <div class="card-label">Module</div>
         <div class="card-value">{{ module_abgeschlossen }}</div>
@@ -47,7 +49,7 @@
             <div class="progress-fill" style="width: {{ module_fortschritt }}%; background-color: #aaddaa;"></div>
         </div>
     </div>
-
+    <!-- erhaltene ECTS -->
     <div class="card box-design">
         <div class="card-label">ECTS</div>
         <div class="card-value">{{ erreichte_credits }}</div>
@@ -56,7 +58,7 @@
             <div class="progress-fill" style="width: {{ credit_fortschritt }}%;; background-color: #aaddaa;"></div>
         </div>
     </div>
-
+    <!-- Notendurchschnitt -->
     <div class="card box-design">
         <div class="card-label">Notendurchschnitt</div>
         <div class="card-value">{{ notendurchschnitt_aktuell }}</div>
@@ -66,9 +68,10 @@
         </div>
     </div>
 </div>
-
+<!-- Tabelle mit Modulen -->
 <div class="table-card box-design">
     <table>
+        <!-- Überschriften -->
         <thead>
         <tr>
             <th style="width: 10%;">Semester</th>
@@ -77,9 +80,13 @@
             <th style="width: 10%; text-align: left;">Note</th>
         </tr>
         </thead>
+        <!-- Liste der Module -->
         <tbody>
+        <!-- Iteration über Semester -->
         {% for sem in sg.semester %}
+            <!-- Iteration über Module des Semesters -->
             {% for mod in sem.module %}
+                <!-- Ausgabe für jedes Modul -->
                 <tr>
                     <td style="text-align: center;">{{ sem.nummer }}</td>
                     <td>{{ mod.titel }}</td>
@@ -98,10 +105,11 @@
         </tbody>
     </table>
 </div>
-
+<!-- Button für Bearbeiten -->
 <div class="center">
     <a href="{{ url_for('bearbeiten') }}" class="btn">bearbeiten</a>
 </div>
+    <!-- lässt die Flash-Nachricht nach 5s verschwinden-->
     <script>
         setTimeout(function() {
             document.querySelector('.flash-container').style.display = 'none';

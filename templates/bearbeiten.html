@@ -11,6 +11,7 @@
 <div class="container">
     <form method="POST">
         <h2>Studiengang bearbeiten</h2>
+        <!-- Container für Flash-Nachricht -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 <div class="flash-container">
@@ -22,22 +23,27 @@
                 </div>
             {% endif %}
         {% endwith %}
+        <!-- Hauptdaten des Studiengangs bearbeiten -->
         <div class="section">
             <div class="form-group">
+                <!-- Titel -->
                 <label for="studien_titel">Name des Studiengangs</label>
                 <input type="text" name="studien_titel" id="studien_titel" class="w-full" value="{{ sg.titel }}">
             </div>
             <div class="form-grid" style="margin-top: 20px;">
                 <div class="form-group">
+                    <!-- Start-Datum -->
                     <label for="start_datum">Studienbeginn</label>
                     <input type="date" name="start_datum" id="start_datum"
                            value="{{ sg.start_datum.strftime('%Y-%m-%d') }}">
                 </div>
                 <div class="form-group">
+                    <!-- Zeitziel -->
                     <label for="ziel_tage">Zeitziel (<=12 = Jahre, >12 = Tage)</label>
                     <input type="number" name="ziel_tage" id="ziel_tage" min="1" max="9999" value="{{ ziel_tage }}">
                 </div>
                 <div class="form-group">
+                    <!-- Notenziel -->
                     <label for="ziel_note">Wunschnote (Durchschnitt)</label>
                     <input type="text" name="ziel_note" min="1.0" max="6.0" step="0.1" id="ziel_note" value="{{ ziel_note }}">
                 </div>
@@ -47,6 +53,7 @@
         <h3>Module & Leistungen</h3>
         <div class="section">
             <table id="module-table">
+                <!-- Überschriften -->
                 <thead>
                 <tr>
                     <th style="width: 7%;">Sem.</th>
@@ -55,24 +62,32 @@
                     <th style="width: 7%;">ECTS</th>
                     <th style="width: 8%;">Note</th>
                     <th style="width: 8%;">Anerk.</th>
+                    <!-- für entfernen Icon -->
                     <th style="width: 5%;"></th>
                 </tr>
                 </thead>
                 <tbody>
+                <!-- Iteration über Semester -->
                 {% for sem in sg.semester %}
+                    <!-- Iteration über Module -->
                     {% for mod in sem.module %}
+                        <!-- Editboxen für jedes Modul mit Daten aus Modul-Objekt ausgeben -->
                         <tr>
+                            <!-- oninput überwacht die Editbox für Semester und lässt nur 2 Stellen zu -->
                             <td><input type="number" name="mod_semester" class="w-full"  min="1" max="99" oninput="if(this.value.length > 2) this.value = this.value.slice(0, 2);" value="{{ sem.nummer }}"></td>
                             <td><input type="text" name="mod_titel" class="w-full" value="{{ mod.titel }}"></td>
                             <td><input type="text" name="mod_pruefung" class="w-full"
                                        value="{{ mod.pruefungsleistung.pruefungsart }}">
                             </td>
                             <td><input type="number" name="mod_credits" class="w-full" min="1" max="10" value="{{ mod.credits }}"></td>
+                            <!-- Wenn Note gesetzt Wert schreiben, wenn Modul anerkannt ist das Feld readOnly -->
                             <td><input type="number" name="mod_note" class="w-full" min="0.0" max="6.0" step="0.1" value="{% if mod.pruefungsleistung.note != None %}{{ mod.pruefungsleistung.note }}{% endif %}" {% if mod.pruefungsleistung.modul_anerkannt %}readonly{% endif %}>
                             </td>
+                            <!-- Checkbox für Anerkennung -->
                             <td><input type="hidden" name="mod_check" value="{{ 'on' if mod.pruefungsleistung.modul_anerkannt else 'off' }}">
-                                <input type="checkbox" {% if mod.pruefungsleistung.modul_anerkannt %}checked{% endif %}  onchange="updateRowStatus(this)">
+                                <input type="checkbox" {% if mod.pruefungsleistung.modul_anerkannt %}checked{% endif %}  onchange="updateCheckbox(this)">
                             </td>
+                            <!-- Button zum Entfernen von Modulen -->
                             <td style="text-align: center;">
                                 <button type="button" class="btn-danger-sm"
                                         onclick="this.parentElement.parentElement.remove()">✕
@@ -83,12 +98,12 @@
                 {% endfor %}
                 </tbody>
             </table>
-
+            <!-- Button neues Modul -->
             <button type="button" class="btn btn-outline" style="margin-top: 15px;" onclick="neuesModul()">
                 + Neues Modul hinzufügen
             </button>
         </div>
-
+        <!-- Button Speicher und Logout -->
         <div class="footer-actions">
             <div>
                 <button type="submit" class="btn btn-success">Änderungen speichern</button>
@@ -98,7 +113,7 @@
         </div>
     </form>
 </div>
-
+<!-- Skript für neues Modul, fügt eine weitere Zeile Editboxen ein -->
 <script>
     function neuesModul() {
         const table = document.getElementById('module-table').getElementsByTagName('tbody')[0];
@@ -109,31 +124,29 @@
         <td><input type="text" name="mod_pruefung" class="w-full" placeholder="z.B. Klausur"></td>
         <td><input type="number" name="mod_credits" min="1" max="10" class="w-full" value="5"></td>
         <td><input type="number" name="mod_note" min="1.0" max="6.0" step="0.1"  class="w-full"></td>
-        <td><input type="hidden" name="mod_check" value="off"><input type="checkbox" onchange="updateRowStatus(this)"></td>
+        <td><input type="hidden" name="mod_check" value="off"><input type="checkbox" onchange="updateCheckbox(this)"></td>
         <td style="text-align: center;">
             <button type="button" class="btn-danger-sm" onclick="this.parentElement.parentElement.remove()">✕</button>
         </td>
     `;
     }
 </script>
+<!-- lässt Flash-Nachricht nach 5s verschwinden -->
 <script>
     setTimeout(function() {
         document.querySelector('.flash-container').style.display = 'none';
     }, 5000);
 </script>
+<!-- Aktualisiert die Checkbox, wenn Modul anerkannt geklickt wird -->
 <script>
-function updateRowStatus(checkbox) {
-    // 1. Das versteckte Feld aktualisieren (steht direkt vor der Checkbox)
+function updateCheckbox(checkbox) {
     const hiddenInput = checkbox.previousElementSibling;
     hiddenInput.value = checkbox.checked ? 'on' : 'off';
-
-    // 2. Das Noten-Feld finden und deaktivieren/aktivieren
-    // Wir gehen zum Eltern-TD -> voriges TD -> Input darin
+    // Editbox für Note suchen - wählt das "td" mit Input was am nächsten zu sich selbst ist
     const noteInput = checkbox.closest('td').previousElementSibling.querySelector('input');
     if (noteInput) {
         noteInput.readOnly = checkbox.checked;
-
-        // Optional: Note leeren, wenn anerkannt wird?
+        // wenn Checkbox angehakt Feld für Note leeren
         if (checkbox.checked) {
              noteInput.value = '';
         }
