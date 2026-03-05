@@ -30,7 +30,7 @@ handler = StudiengangHandler() # Aktualisierung über Webformular
 ansicht = StudiengangAnsicht() # Gibt die Flask Templates zur Ansicht aus (HTML)
 
 # Logging Konfiguration, Ausgabe in Datei, Datei wird bei jedem Start überschrieben, nur Fehler werden geschrieben, Formatierung
-logging.basicConfig(filename='dashboard.log', filemode='w', level=logging.ERROR,
+logging.basicConfig(filename='dashboard.log', filemode='w', level=logging.WARNING,
                     format='%(asctime)s - %(levelname)s - %(message)s',
                     datefmt='%Y-%m-%d %H:%M:%S')
 

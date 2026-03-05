@@ -10,10 +10,10 @@ from klassen.domain.ziel_zeit import ZeitZiel
 
 
 class StudiengangCSVConverter:
-    """ Erstellt einen Studiengang, liest optional eine CSV-Datei ein und """
+    """ Erstellt einen Studiengang, liest optional eine CSV-Datei ein """
     @staticmethod
     def deserialisieren(csv_read):
-        """ Wandelt Daten aus CSV-Datei in einen Studiengang um. """
+        """ Wandelt Daten aus CSV-Datei in Module um """
         # Standardwerte setzen, welche nicht in der CSV-Datei stehen (müssen im Webinterface angepasst werden)
         start_datum = datetime.datetime.now() # Aktuelles Datum als Start-Datum setzen
         # Ziele auf 0 setzen

@@ -29,7 +29,7 @@ class Studiengang:
             # gerundeten Wert zurückgeben
             return round(notendurchschnitt, 1)
         except ZeroDivisionError:
-            # Wenn Notenliste leer dann 0,0 zurückgeben
+            # Wenn Notenliste leer dann 0.0 zurückgeben
             return 0.0
 
     def berechne_abgeschlossene_module(self):
@@ -56,6 +56,6 @@ class Studiengang:
         return erreichte_credits
 
     def berechne_vergangene_tage(self):
-        """ Berechnet die Tage seit eingetragenem Studienbeginn """
+        """ Berechnet die Differenz in Tagen von Heute zum eingetragenem Studienbeginn """
         # berechnet die Differenz des aktuellen Datums und des Start-Datums
         return (datetime.datetime.now() - self.start_datum).days

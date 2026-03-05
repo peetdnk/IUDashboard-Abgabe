@@ -14,7 +14,7 @@ class StudiengangService:
         try:
             # teilt die schon erhaltenen ECTS durch die Gesamtanzahl, um einen Prozentwert zu erhalten
             fortschritt = studiengang.berechne_erreichte_credits() / gesamt_credits * 100
-        # für den Fall, dass noch keine ECTS erhalten wurden, wird der Fortschritt auf 0% gesetzt
+        # falls keine Module angelegt sind, wird der Fortschritt auf 0% gesetzt
         except ZeroDivisionError:
             fortschritt = 0
         return fortschritt
@@ -29,7 +29,7 @@ class StudiengangService:
         try:
             # teilt die abgeschlossenen Module durch die Gesamtanzahl Module
             fortschritt = studiengang.berechne_abgeschlossene_module() / gesamt_module * 100
-        # für den Fall, dass keine Module abgeschlossen sind, wird dewr Fortschritt auf 0% gesetzt
+        # falls keine Module angelegt sind, wird der Fortschritt auf 0% gesetzt
         except ZeroDivisionError:
             fortschritt = 0
         return fortschritt
@@ -44,7 +44,7 @@ class StudiengangService:
             # falls Ergebnis negativ, 0 setzen - kommt vor, wenn Startdatum in der Zukunft liegt
             if zeit_fortschritt < 0:
                 zeit_fortschritt = 0
-        # für den Fall ZeitZiel = 0
+        # falls ZeitZiel = 0
         except ZeroDivisionError:
             zeit_fortschritt = 0
         return zeit_fortschritt

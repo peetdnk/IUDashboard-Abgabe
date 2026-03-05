@@ -13,7 +13,7 @@ class StudiengangAnsicht:
         # Werte zu Variablen zuordnen die in dem HTML Template genutzt werden
         return render_template(
             'dashboard.html',
-            sg=manager.studiengang_laden(),
+            sg=studiengang,
             tage_vergangen=studiengang.berechne_vergangene_tage(),
             tage_ziel=studiengang.ziele['zeit'].zeitziel_in_tagen,
             zeitbalken_fortschritt=service.zeit_fortschritt(studiengang),

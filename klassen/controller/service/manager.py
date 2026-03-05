@@ -11,13 +11,10 @@ class StudiengangManager:
         self.importer = importer
 
     def studiengang_laden(self) -> Studiengang:
-        """
-        Versucht JSON zu laden - falls nicht vorhanden,
-        wird aus CSV importiert oder leer erstellt und gespeichert.
-        """
+        """ Versucht JSON zu laden - falls nicht vorhanden,  wird neu erstellt und gespeichert. """
         # Studiengang über Repository Interface laden
         studiengang = self.speicher.laden()
-        if studiengang is None: # None bedeutet hier, dass keine JSON-Datei zum Laden gefunden wurde, also kein Studiengang existiert
+        if studiengang is None:  # None bedeutet hier, dass keine JSON-Datei zum Laden gefunden wurde, also kein Studiengang existiert
             logging.info("Kein JSON gefunden. Versuche aus CSV zu erstellen.")
             # Studiengang neu erstellen und Daten aus CSV einlesen
             studiengang = self._studiengang_erstellen()
@@ -26,7 +23,7 @@ class StudiengangManager:
         return studiengang
 
     def _studiengang_erstellen(self) -> Studiengang:
-        """ Liest CSV ein oder erstellt einen leeren Studiengang, falls CSV fehlt."""
+        """ Erstellt einen Studiengang, liest optional CSV-Datei ein und erstellt daraus Module"""
         # gibt vom Repository Interface erstellten Studiengang zurück
         return self.importer.laden()
 

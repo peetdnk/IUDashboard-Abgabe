@@ -19,6 +19,7 @@ class StudiengangHandler:
         studiengang.titel = form_data.get('studien_titel', studiengang.titel)
         start_datum_raw = form_data.get('start_datum')
         try:
+            # versuchen das Datum umzuwandeln, Logausgabe wenn Fehler auftritt
             studiengang.start_datum = datetime.datetime.strptime(start_datum_raw, '%Y-%m-%d')
         except ValueError:
             logging.error(f"Datum konnte nicht gelesen werden: {start_datum_raw}")

@@ -17,8 +17,14 @@ converter = StudiengangCSVConverter()
 
 class StudiengangCSVData(IStudiengangRepository):
     """ Liest Daten aus CSV-Datei aus """
+
+    def speichern(self, studiengang):
+        """ Speichern in CSV-Datei. Nicht erlaubt. """
+        # Funktion ist nicht implementiert.
+        return NotImplemented
+
     def laden(self):
-        """ Semester & Module aus CSV-Datei auslesen """
+        """ Module aus CSV-Datei auslesen """
         logging.info("Versuche CSV-Datei " + str(csv_filename) + " einzulesen.")
         # Liste für Daten erstellen
         data = []
@@ -31,8 +37,3 @@ class StudiengangCSVData(IStudiengangRepository):
                 data = list(csv_read)
         # Rückgabe der konvertierten Daten nach Aufruf des Konverters (Studiengang-Objekt)
         return converter.deserialisieren(data)
-
-    def speichern(self, studiengang):
-        """ Speichern in CSV-Datei. Nicht erlaubt. """
-        # Funktion ist nicht implementiert.
-        return NotImplemented
