@@ -32,7 +32,7 @@ class StudiengangCSVData(IStudiengangRepository):
             # Datei öffnen, wenn vorhanden
             with open(csv_filename, newline='', encoding='utf-8') as csv_file:
                 # CSV Daten auslesen
-                csv_read = csv.DictReader(csv_file)
+                csv_read = csv.DictReader(csv_file, delimiter="|")
                 # Daten in die Liste schreiben
                 data = list(csv_read)
         # Rückgabe der konvertierten Daten nach Aufruf des Konverters (Studiengang-Objekt)
