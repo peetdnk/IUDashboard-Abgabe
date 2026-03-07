@@ -11,7 +11,7 @@
 <div class="container">
     <form method="POST">
         <h2>Studiengang bearbeiten</h2>
-        <!-- Container für Flash-Nachricht -->
+        <!-- Container für Flash-Nachricht (Speichern erfolgreich oder Fehlermeldung) -->
         {% with messages = get_flashed_messages(with_categories=true) %}
             {% if messages %}
                 <div class="flash-container">
