@@ -5,7 +5,7 @@ CSV-Datei verzichtet. Um einen eigenen Studiengang einzulesen, kann eine CSV-Dat
 den Spaltenüberschriften anhand eines Studienablaufplans erstellt werden, Zeile 2 zeigt ein Beispiel-
 Modul:
 ```
-Semester,Modul,ECTS,Pruefungsleistung
+Semester|Modul|ECTS|Pruefungsleistung
 2|Projekt: Objektorientierte und funktionale Programmierung mit Python|5|Portfolio
 ```
 Dabei muss darauf geachtet werden, dass das Trennzeichen "|" nicht zusätzlich genutzt wird um Fehler bei dem Einlesen zu vermeiden.
