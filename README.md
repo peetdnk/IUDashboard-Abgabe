@@ -6,8 +6,9 @@ den Spaltenüberschriften anhand eines Studienablaufplans erstellt werden, Zeile
 Modul:
 ```
 Semester,Modul,ECTS,Pruefungsleistung
-2,Projekt: Objektorientierte und funktionale Programmierung mit Python,5,Portfolio
+2|Projekt: Objektorientierte und funktionale Programmierung mit Python|5|Portfolio
 ```
+Dabei muss darauf geachtet werden, dass das Trennzeichen "|" nicht zusätzlich genutzt wird um Fehler bei dem Einlesen zu vermeiden.
 Der restliche Teil der Anleitung setzt eine funktionierende Python3 Installation vorraus.
 
 # Installation (Windows)
