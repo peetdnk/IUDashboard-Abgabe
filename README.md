@@ -22,7 +22,8 @@ cd IUDashboard-Abgabe
 -> ”In Terminal öffnen” PowerShell öffnen.
 3. Mit den folgenden Befehlen, wird eine virtuelle Umgebung erstellt, darin die benötigten Pakete
 installiert und das Programm gestartet. ”Set-ExecutionPolicy...” sorgt dafür, dass dem aktuellen
-PowerShell Fenster erlaubt wird lokale Skripte auszuführen.
+PowerShell Fenster erlaubt wird lokale Skripte auszuführen, was für die darauffolgende Zeile
+notwendig ist.
 ```
 python -m venv venv
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
